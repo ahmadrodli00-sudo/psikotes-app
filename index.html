@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psikotes Seleksi Kerja</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Google Sans', Roboto, Arial, sans-serif; }
+  body {
+    background: #f0ebf8;
+    min-height: 100vh;
+    padding: 20px 12px 100px;
+    color: #202124;
+  }
+  .wrapper { max-width: 770px; margin: 0 auto; }
+
+  /* ===== HEADER CARD ===== */
+  .form-header {
+    background: #fff;
+    border-radius: 8px;
+    border-top: 10px solid #673ab7;
+    padding: 22px 24px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .form-header h1 {
+    font-size: 32px;
+    font-weight: 400;
+    margin-bottom: 12px;
+  }
+  .form-header .desc {
+    font-size: 14px;
+    color: #5f6368;
+    line-height: 1.5;
+  }
+  .required-note {
+    color: #d93025;
+    font-size: 13px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #dadce0;
+  }
+  .required-note::before { content: "* "; }
+
+  /* ===== QUESTION CARD ===== */
+  .q-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border-left: 6px solid transparent;
+    transition: border 0.2s;
+  }
+  .q-card.answered { border-left-color: #673ab7; }
+  .q-card.error { border-left-color: #d93025; }
+
+  .q-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+  .q-title .num { margin-right: 6px; }
+  .q-title .req { color: #d93025; margin-left: 2px; }
+
+  .q-options { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+
+  /* ===== RADIO ===== */
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 4px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.15s;
+  }
+  .opt:hover { background: #f8f9fa; }
+  .opt input[type="radio"] { display: none; }
+  .radio-circle {
+    width: 20px; height: 20px;
+    border: 2px solid #5f6368;
+    border-radius: 50%;
+    position: relative;
+    flex-shrink: 0;
+    transition: border 0.15s;
+  }
+  .opt input:checked + .radio-circle { border-color: #673ab7; }
+  .opt input:checked + .radio-circle::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    background: #673ab7;
+    border-radius: 50%;
+  }
+  .opt-label { font-size: 14px; color: #202124; }
+
+  /* ===== TEXT INPUT ===== */
+  .text-input {
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    border-bottom: 1px solid #dadce0;
+    font-size: 14px;
+    outline: none;
+    transition: border 0.2s;
+    background: transparent;
+  }
+  .text-input:focus { border-bottom: 2px solid #673ab7; }
+
+  /* ===== BUTTONS ===== */
+  .actions { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+  .btn {
+    background: #673ab7;
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.25px;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  .btn:hover { background: #5e35b1; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+  .btn:disabled { background: #dadce0; color: #80868b; cursor: not-allowed; box-shadow: none; }
+  .btn-outline {
+    background: transparent;
+    color: #673ab7;
+    border: none;
+    font-weight: 500;
+  }
+  .btn-outline:hover { background: #f3eefc; box-shadow: none; }
+  .btn-text {
+    background: transparent;
+    color: #5f6368;
+    padding: 8px 12px;
+  }
+  .btn-text:hover { background: #f1f3f4; box-shadow: none; }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-wrap {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: #e0d7f3;
+    z-index: 100;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #673ab7;
+    width: 0%;
+    transition: width 0.35s ease;
+  }
+
+  /* ===== PAGE NAV ===== */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ===== SUCCESS PAGE ===== */
+  .success-card {
+    background: #fff;
+    border-radius: 8px;
+    border-top: 10px solid #673ab7;
+    padding: 44px 24px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .success-card h2 { font-size: 24px; font-weight: 400; margin-bottom: 12px; }
+  .success-card p { color: #5f6368; font-size: 14px; line-height: 1.6; }
+  .success-card .big-check {
+    font-size: 60px;
+    margin-bottom: 16px;
+  }
+
+  /* ===== ADMIN TABLE ===== */
+  .admin-header {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .admin-header h2 { font-size: 20px; font-weight: 500; }
+  .table-wrap { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #e8eaed; }
+  th { background: #673ab7; color: #fff; font-weight: 500; font-size: 13px; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8f9fa; }
+  .badge {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .badge.pass { background: #e6f4ea; color: #137333; }
+  .badge.fail { background: #fce8e6; color: #c5221f; }
+
+  /* ===== RESULTS VIEW ===== */
+  .result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e8eaed;
+    font-size: 14px;
+  }
+  .result-row:last-child { border-bottom: none; }
+  .score-circle {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .score-circle.pass { background: #137333; }
+  .score-circle.fail { background: #c5221f; }
+
+  /* ===== TIMER FLOATING ===== */
+  .timer-float {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: #fff;
+    border-radius: 30px;
+    padding: 12px 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    font-weight: 600;
+    font-size: 15px;
+    color: #673ab7;
+    z-index: 50;
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+  .timer-float.show { display: flex; }
+  .timer-float.warning { color: #d93025; animation: pulse 1s infinite; }
+  @keyframes pulse { 50% { opacity: 0.5; } }
+
+  @media (max-width: 600px) {
+    .form-header h1 { font-size: 24px; }
+    .q-card { padding: 18px; }
+    .btn { padding: 10px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div class="timer-float" id="timerFloat">⏱ <span id="timerText">00:00</span></div>
+
+<div class="wrapper">
+
+  <!-- ==================== PAGE: FORM ==================== -->
+  <div class="page active" id="pageForm">
+    <div class="form-header">
+      <h1 id="formTitle">Tes Psikotes Seleksi Kerja</h1>
+      <p class="desc" id="formDesc">
+        Selamat datang! Tes ini terdiri dari beberapa bagian untuk mengukur kemampuan logika, verbal, numerik, dan kecepatan kerja. Jawablah dengan jujur dan teliti.
+      </p>
+      <p class="required-note">Wajib diisi</p>
+    </div>
+
+    <!-- Identitas -->
+    <div class="q-card" id="cardNama">
+      <div class="q-title"><span class="num">1.</span>Nama Lengkap <span class="req">*</span></div>
+      <input type="text" class="text-input" id="inputNama" placeholder="Jawaban Anda">
+    </div>
+
+    <div class="q-card" id="cardPosisi">
+      <div class="q-title"><span class="num">2.</span>Posisi yang Dilamar <span class="req">*</span></div>
+      <input type="text" class="text-input" id="inputPosisi" placeholder="Jawaban Anda">
+    </div>
+
+    <div class="q-card" id="cardTest">
+      <div class="q-title"><span class="num">3.</span>Pilih Jenis Tes <span class="req">*</span></div>
+      <div class="q-options">
+        <label class="opt">
+          <input type="radio" name="jenisTes" value="logika">
+          <span class="radio-circle"></span>
+          <span class="opt-label">🔢 Tes Logika — Deret angka &amp; pola</span>
+        </label>
+        <label class="opt">
+          <input type="radio" name="jenisTes" value="verbal">
+          <span class="radio-circle"></span>
+          <span class="opt-label">📝 Tes Verbal — Sinonim &amp; antonim</span>
+        </label>
+        <label class="opt">
+          <input type="radio" name="jenisTes" value="numerik">
+          <span class="radio-circle"></span>
+          <span class="opt-label">➗ Tes Numerik — Aritmatika dasar</span>
+        </label>
+        <label class="opt">
+          <input type="radio" name="jenisTes" value="kraepelin">
+          <span class="radio-circle"></span>
+          <span class="opt-label">⚡ Tes Kraepelin — Kecepatan &amp; ketelitian</span>
+        </label>
+        <label class="opt">
+          <input type="radio" name="jenisTes" value="semua">
+          <span class="radio-circle"></span>
+          <span class="opt-label">🎯 Semua Tes — Ujian lengkap</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="actions" style="justify-content: flex-end;">
+      <button class="btn" onclick="mulaiTes()">Mulai Tes →</button>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: SOAL ==================== -->
+  <div class="page" id="pageSoal">
+    <div class="form-header">
+      <h1 id="soalTitle">Bagian 1 dari 1</h1>
+      <p class="desc" id="soalDesc">Jawab semua pertanyaan berikut.</p>
+    </div>
+
+    <div id="soalContainer"></div>
+
+    <div class="actions">
+      <button class="btn btn-text" onclick="konfirmasiKeluar()">← Keluar</button>
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-outline" id="btnPrev" onclick="soalSebelumnya()">← Sebelumnya</button>
+        <button class="btn" id="btnNext" onclick="soalBerikutnya()">Berikutnya →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: SELESAI ==================== -->
+  <div class="page" id="pageSelesai">
+    <div class="success-card">
+      <div class="big-check">✅</div>
+      <h2>Jawaban Anda telah dikirim</h2>
+      <p>Terima kasih, <strong id="namaSelesai"></strong>.<br>
+      Jawaban Anda telah tersimpan. Hasil akan diinformasikan oleh tim HRD.</p>
+      <div style="margin-top:24px;">
+        <button class="btn btn-outline" onclick="lihatHasilSaya()">Lihat Ringkasan Hasil</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: HASIL PESERTA ==================== -->
+  <div class="page" id="pageHasilPeserta">
+    <div class="form-header">
+      <h1>Ringkasan Hasil Tes</h1>
+      <p class="desc" id="hasilNamaDesc"></p>
+    </div>
+    <div class="q-card" id="hasilBody"></div>
+    <div class="actions" style="justify-content: flex-end;">
+      <button class="btn" onclick="kembaliKeBeranda()">Selesai</button>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: ADMIN ==================== -->
+  <div class="page" id="pageAdmin">
+    <div class="admin-header">
+      <h2>📊 Rekap Hasil Peserta</h2>
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-text" onclick="exportCSV()">⬇ Export CSV</button>
+        <button class="btn btn-text" onclick="hapusSemuaData()" style="color:#d93025;">🗑 Hapus Semua</button>
+        <button class="btn" onclick="kembaliKeBeranda()">Tutup</button>
+      </div>
+    </div>
+    <div class="q-card" style="padding:0;">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama</th>
+              <th>Posisi</th>
+              <th>Tes</th>
+              <th>Skor</th>
+              <th>Status</th>
+              <th>Waktu</th>
+              <th>Tanggal</th>
+            </tr>
+          </thead>
+          <tbody id="adminTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* =========================================================
+   DATA SOAL
+========================================================= */
+const questions = {
+  logika: [
+    { q: "2, 4, 8, 16, ... ?", o: ["24", "32", "30", "28"], a: 1 },
+    { q: "1, 4, 9, 16, ... ?", o: ["20", "24", "25", "30"], a: 2 },
+    { q: "3, 6, 12, 24, ... ?", o: ["36", "48", "42", "30"], a: 1 },
+    { q: "5, 10, 20, 40, ... ?", o: ["60", "70", "80", "100"], a: 2 },
+    { q: "1, 1, 2, 3, 5, 8, ... ?", o: ["11", "12", "13", "14"], a: 2 },
+    { q: "100, 90, 80, 70, ... ?", o: ["50", "60", "65", "55"], a: 1 },
+    { q: "2, 6, 12, 20, 30, ... ?", o: ["40", "42", "44", "46"], a: 1 },
+    { q: "A, C, E, G, ... ?", o: ["H", "I", "J", "K"], a: 1 },
+    { q: "81, 27, 9, 3, ... ?", o: ["0", "1", "2", "3"], a: 1 },
+    { q: "4, 5, 7, 10, 14, ... ?", o: ["18", "19", "20", "21"], a: 1 }
+  ],
+  verbal: [
+    { q: "Sinonim dari 'BAHAGIA' adalah...", o: ["Sedih", "Senang", "Marah", "Takut"], a: 1 },
+    { q: "Antonim dari 'GIGIH' adalah...", o: ["Keras", "Malas", "Tekun", "Rajin"], a: 1 },
+    { q: "Sinonim dari 'PANDAI' adalah...", o: ["Bodoh", "Cerdas", "Malas", "Kuat"], a: 1 },
+    { q: "Antonim dari 'TERANG' adalah...", o: ["Gelap", "Cahaya", "Silau", "Benderang"], a: 0 },
+    { q: "Sinonim dari 'INDAH' adalah...", o: ["Buruk", "Jelek", "Cantik", "Kotor"], a: 2 },
+    { q: "Antonim dari 'TINGGI' adalah...", o: ["Besar", "Rendah", "Panjang", "Lebar"], a: 1 },
+    { q: "Sinonim dari 'CEPAT' adalah...", o: ["Lambat", "Lekas", "Santai", "Malas"], a: 1 },
+    { q: "Antonim dari 'KAYA' adalah...", o: ["Miskin", "Makmur", "Berkecukupan", "Sejahtera"], a: 0 },
+    { q: "Sinonim dari 'BERANI' adalah...", o: ["Takut", "Cemas", "Gagah", "Ragu"], a: 2 },
+    { q: "Antonim dari 'RAMAI' adalah...", o: ["Sibuk", "Padat", "Sepi", "Bising"], a: 2 }
+  ],
+  numerik: [
+    { q: "15 + 27 = ?", o: ["42", "40", "44", "38"], a: 0 },
+    { q: "84 - 36 = ?", o: ["44", "46", "48", "50"], a: 2 },
+    { q: "12 × 8 = ?", o: ["86", "96", "106", "116"], a: 1 },
+    { q: "144 ÷ 12 = ?", o: ["10", "11", "12", "13"], a: 2 },
+    { q: "25% dari 200 = ?", o: ["40", "45", "50", "55"], a: 2 },
+    { q: "Jika 3x = 21, maka x = ?", o: ["5", "6", "7", "8"], a: 2 },
+    { q: "√169 = ?", o: ["11", "12", "13", "14"], a: 2 },
+    { q: "2³ + 3² = ?", o: ["15", "16", "17", "18"], a: 2 },
+    { q: "45 + 55 - 20 = ?", o: ["70", "75", "80", "85"], a: 2 },
+    { q: "Rata-rata dari 4, 6, 8, 10 = ?", o: ["6", "7", "8", "9"], a: 1 }
+  ],
+  kraepelin: [
+    { q: "7 + 5 = ?", o: ["11", "12", "13", "14"], a: 1 },
+    { q: "8 + 6 = ?", o: ["13", "14", "15", "16"], a: 1 },
+    { q: "9 + 4 = ?", o: ["12", "13", "14", "15"], a: 1 },
+    { q: "6 + 7 = ?", o: ["12", "13", "14", "15"], a: 1 },
+    { q: "5 + 8 = ?", o: ["12", "13", "14", "15"], a: 1 },
+    { q: "9 + 9 = ?", o: ["17", "18", "19", "20"], a: 1 },
+    { q: "7 + 7 = ?", o: ["13", "14", "15", "16"], a: 1 },
+    { q: "8 + 9 = ?", o: ["16", "17", "18", "19"], a: 1 },
+    { q: "6 + 8 = ?", o: ["13", "14", "15", "16"], a: 1 },
+    { q: "4 + 9 = ?", o: ["12", "13", "14", "15"], a: 1 },
+    { q: "5 + 5 = ?", o: ["9", "10", "11", "12"], a: 1 },
+    { q: "3 + 8 = ?", o: ["10", "11", "12", "13"], a: 1 },
+    { q: "7 + 9 = ?", o: ["15", "16", "17", "18"], a: 1 },
+    { q: "6 + 6 = ?", o: ["11", "12", "13", "14"], a: 1 },
+    { q: "8 + 7 = ?", o: ["14", "15", "16", "17"], a: 1 }
+  ]
+};
+
+const testInfo = {
+  logika:    { nama: "Tes Logika",    icon: "🔢", desc: "Deret angka & pola logika", threshold: 70 },
+  verbal:    { nama: "Tes Verbal",    icon: "📝", desc: "Sinonim & antonim",          threshold: 70 },
+  numerik:   { nama: "Tes Numerik",   icon: "➗", desc: "Aritmatika dasar",           threshold: 70 },
+  kraepelin: { nama: "Tes Kraepelin", icon: "⚡", desc: "Kecepatan & ketelitian",     threshold: 60 }
+};
+
+/* =========================================================
+   STATE
+========================================================= */
+let state = {
+  nama: '', posisi: '', jenis: '',
+  urutanTes: [],       // daftar jenis tes yang akan dikerjakan
+  indexTes: 0,         // sedang tes ke berapa
+  soalList: [],        // soal untuk tes aktif
+  indexSoal: 0,        // soal ke berapa
+  jawaban: {},         // { "logika-0": 1, ... }
+  waktuMulai: 0,
+  timerId: null,
+  hasilSementara: []   // hasil tiap tes yg sudah selesai
+};
+
+/* =========================================================
+   NAVIGASI HALAMAN
+========================================================= */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateProgress();
+}
+
+function updateProgress() {
+  const form = document.getElementById('pageForm').classList.contains('active');
+  const soal = document.getElementById('pageSoal').classList.contains('active');
+  let pct = 0;
+  if (form) pct = 5;
+  else if (soal) {
+    const total = state.urutanTes.length * 10; // estimasi
+    const done = state.hasilSementara.length * 10 + state.indexSoal;
+    pct = 10 + (done / total) * 85;
+  } else pct = 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+/* =========================================================
+   MULAI TES
+========================================================= */
+function mulaiTes() {
+  const nama = document.getElementById('inputNama').value.trim();
+  const posisi = document.getElementById('inputPosisi').value.trim();
+  const jenisEl = document.querySelector('input[name="jenisTes"]:checked');
+
+  // Reset error
+  ['cardNama','cardPosisi','cardTest'].forEach(id => document.getElementById(id).classList.remove('error'));
+
+  let valid = true;
+  if (!nama) { document.getElementById('cardNama').classList.add('error'); valid = false; }
+  if (!posisi) { document.getElementById('cardPosisi').classList.add('error'); valid = false; }
+  if (!jenisEl) { document.getElementById('cardTest').classList.add('error'); valid = false; }
+
+  if (!valid) {
+    // Scroll ke error pertama
+    const err = document.querySelector('.q-card.error');
+    if (err) err.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  state.nama = nama;
+  state.posisi = posisi;
+  state.jenis = jenisEl.value;
+  state.urutanTes = jenisEl.value === 'semua'
+    ? ['logika', 'verbal', 'numerik', 'kraepelin']
+    : [jenisEl.value];
+  state.indexTes = 0;
+  state.jawaban = {};
+  state.hasilSementara = [];
+  state.waktuMulai = Date.now();
+
+  mulaiTesBerikutnya();
+}
+
+/* =========================================================
+   MULAI SATU JENIS TES
+========================================================= */
+function mulaiTesBerikutnya() {
+  if (state.indexTes >= state.urutanTes.length) {
+    selesaiSemuaTes();
+    return;
+  }
+  const jenis = state.urutanTes[state.indexTes];
+  state.soalList = questions[jenis];
+  state.indexSoal = 0;
+
+  const info = testInfo[jenis];
+  const bagian = `Bagian ${state.indexTes + 1} dari ${state.urutanTes.length}`;
+  document.getElementById('soalTitle').textContent = bagian;
+  document.getElementById('soalDesc').innerHTML =
+    `<strong>${info.icon} ${info.nama}</strong> — ${info.desc}. Jawab semua pertanyaan berikut.`;
+
+  renderSoal();
+  startTimer();
+  showPage('pageSoal');
+}
+
+/* =========================================================
+   RENDER SOAL (Google Forms Style — 1 soal per halaman)
+========================================================= */
+function renderSoal() {
+  const jenis = state.urutanTes[state.indexTes];
+  const soal = state.soalList[state.indexSoal];
+  const key = `${jenis}-${state.indexSoal}`;
+  const jawabanTersimpan = state.jawaban[key];
+
+  const container = document.getElementById('soalContainer');
+  container.innerHTML = '';
+
+  const card = document.createElement('div');
+  card.className = 'q-card' + (jawabanTersimpan !== undefined ? ' answered' : '');
+  card.innerHTML = `
+    <div class="q-title">
+      <span class="num">${state.indexSoal + 1}.</span>${escapeHtml(soal.q)} <span class="req">*</span>
+    </div>
+    <div class="q-options" id="opsiWrap"></div>
+  `;
+  container.appendChild(card);
+
+  const opsiWrap = card.querySelector('#opsiWrap');
+  soal.o.forEach((opt, i) => {
+    const label = document.createElement('label');
+    label.className = 'opt';
+    label.innerHTML = `
+      <input type="radio" name="soal" value="${i}" ${jawabanTersimpan === i ? 'checked' : ''}>
+      <span class="radio-circle"></span>
+      <span class="opt-label">${escapeHtml(opt)}</span>
+    `;
+    label.querySelector('input').addEventListener('change', () => {
+      state.jawaban[key] = i;
+      card.classList.add('answered');
+      card.classList.remove('error');
+      updateProgress();
+    });
+    opsiWrap.appendChild(label);
+  });
+
+  // Tombol nav
+  document.getElementById('btnPrev').disabled = state.indexSoal === 0;
+  const isLast = state.indexSoal === state.soalList.length - 1;
+  document.getElementById('btnNext').textContent = isLast ? 'Kirim' : 'Berikutnya →';
+  updateProgress();
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  })[c]);
+}
+
+/* =========================================================
+   NAVIGASI SOAL
+========================================================= */
+function soalSebelumnya() {
+  if (state.indexSoal > 0) {
+    state.indexSoal--;
+    renderSoal();
+  }
+}
+
+function soalBerikutnya() {
+  const jenis = state.urutanTes[state.indexTes];
+  const key = `${jenis}-${state.indexSoal}`;
+  if (state.jawaban[key] === undefined) {
+    const card = document.querySelector('.q-card');
+    card.classList.add('error');
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    alert('⚠️ Pertanyaan ini wajib dijawab.');
+    return;
+  }
+
+  if (state.indexSoal < state.soalList.length - 1) {
+    state.indexSoal++;
+    renderSoal();
+  } else {
+    // Selesai satu tes
+    stopTimer();
+    simpanHasilTes();
+    state.indexTes++;
+    mulaiTesBerikutnya();
+  }
+}
+
+/* =========================================================
+   HITUNG SKOR & SIMPAN
+========================================================= */
+function simpanHasilTes() {
+  const jenis = state.urutanTes[state.indexTes];
+  const list = state.soalList;
+  let benar = 0;
+  list.forEach((q, i) => {
+    if (state.jawaban[`${jenis}-${i}`] === q.a) benar++;
+  });
+  const skor = Math.round((benar / list.length) * 100);
+  const info = testInfo[jenis];
+  const status = skor >= info.threshold ? 'LULUS' : 'TIDAK LULUS';
+
+  state.hasilSementara.push({
+    jenis, nama: info.nama, icon: info.icon,
+    benar, total: list.length, skor, status, threshold: info.threshold
+  });
+}
+
+function selesaiSemuaTes() {
+  stopTimer();
+  const durasi = Math.round((Date.now() - state.waktuMulai) / 1000);
+
+  // Simpan ke localStorage
+  const results = JSON.parse(localStorage.getItem('psikotes_forms') || '[]');
+  state.hasilSementara.forEach(h => {
+    results.push({
+      nama: state.nama,
+      posisi: state.posisi,
+      tes: h.nama,
+      icon: h.icon,
+      skor: h.skor,
+      benar: h.benar,
+      total: h.total,
+      status: h.status,
+      durasi,
+      tanggal: new Date().toLocaleString('id-ID')
+    });
+  });
+  localStorage.setItem('psikotes_forms', JSON.stringify(results));
+
+  // Tampilkan halaman selesai
+  document.getElementById('namaSelesai').textContent = state.nama;
+  showPage('pageSelesai');
+}
+
+/* =========================================================
+   TIMER
+========================================================= */
+function startTimer() {
+  stopTimer();
+  const tf = document.getElementById('timerFloat');
+  tf.classList.add('show');
+  updateTimerDisplay(0);
+  const mulai = Date.now();
+  state.timerId = setInterval(() => {
+    const detik = Math.round((Date.now() - mulai) / 1000);
+    updateTimerDisplay(detik);
+  }, 500);
+}
+function stopTimer() {
+  if (state.timerId) clearInterval(state.timerId);
+  state.timerId = null;
+  document.getElementById('timerFloat').classList.remove('show');
+}
+function updateTimerDisplay(detik) {
+  const m = String(Math.floor(detik / 60)).padStart(2, '0');
+  const s = String(detik % 60).padStart(2, '0');
+  document.getElementById('timerText').textContent = `${m}:${s}`;
+  // Warning setelah 5 menit
+  const el = document.getElementById('timerFloat');
+  if (detik >= 300) el.classList.add('warning');
+  else el.classList.remove('warning');
+}
+
+/* =========================================================
+   HASIL PESERTA
+========================================================= */
+function lihatHasilSaya() {
+  document.getElementById('hasilNamaDesc').innerHTML =
+    `<strong>${escapeHtml(state.nama)}</strong> — ${escapeHtml(state.posisi)}`;
+
+  const body = document.getElementById('hasilBody');
+  let html = '';
+  state.hasilSementara.forEach(h => {
+    const pass = h.status === 'LULUS';
+    html += `
+      <div class="result-row">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <div class="score-circle ${pass ? 'pass' : 'fail'}">${h.skor}</div>
+          <div>
+            <div style="font-weight:500;">${h.icon} ${h.nama}</div>
+            <div style="font-size:13px; color:#5f6368;">
+              Benar ${h.benar}/${h.total} • Nilai min. ${h.threshold}
+            </div>
+          </div>
+        </div>
+        <span class="badge ${pass ? 'pass' : 'fail'}">${h.status}</span>
+      </div>
+    `;
+  });
+  const totalSkor = Math.round(
+    state.hasilSementara.reduce((a, b) => a + b.skor, 0) / state.hasilSementara.length
+  );
+  const lulusSemua = state.hasilSementara.every(h => h.status === 'LULUS');
+  html += `
+    <div style="margin-top:20px; padding-top:16px; border-top:2px solid #e8eaed; text-align:center;">
+      <div style="font-size:13px; color:#5f6368;">Rata-rata Nilai</div>
+      <div style="font-size:36px; font-weight:600; color:${lulusSemua ? '#137333' : '#c5221f'};">
+        ${totalSkor}
+      </div>
+      <span class="badge ${lulusSemua ? 'pass' : 'fail'}" style="font-size:13px; padding:6px 16px;">
+        ${lulusSemua ? '✓ SEMUA TES LULUS' : '✗ BELUM LULUS SEMUA TES'}
+      </span>
+    </div>
+  `;
+  body.innerHTML = html;
+  showPage('pageHasilPeserta');
+}
+
+/* =========================================================
+   ADMIN PANEL
+========================================================= */
+function bukaAdmin() {
+  renderAdmin();
+  showPage('pageAdmin');
+}
+
+function renderAdmin() {
+  const data = JSON.parse(localStorage.getItem('psikotes_forms') || '[]');
+  const tbody = document.getElementById('adminTbody');
+  if (data.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#999; padding:32px;">
+      Belum ada data peserta</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map((r, i) => {
+    const m = String(Math.floor(r.durasi / 60)).padStart(2, '0');
+    const s = String(r.durasi % 60).padStart(2, '0');
+    const pass = r.status === 'LULUS';
+    return `
+      <tr>
+        <td>${i + 1}</td>
+        <td><strong>${escapeHtml(r.nama)}</strong></td>
+        <td>${escapeHtml(r.posisi)}</td>
+        <td>${r.icon} ${r.tes}</td>
+        <td><strong>${r.skor}</strong></td>
+        <td><span class="badge ${pass ? 'pass' : 'fail'}">${r.status}</span></td>
+        <td>${m}:${s}</td>
+        <td style="font-size:12px; color:#5f6368;">${r.tanggal}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function exportCSV() {
+  const data = JSON.parse(localStorage.getItem('psikotes_forms') || '[]');
+  if (data.length === 0) { alert('Belum ada data untuk diexport.'); return; }
+  const header = ['Nama','Posisi','Tes','Skor','Benar','Total','Status','Durasi (detik)','Tanggal'];
+  const rows = data.map(r => [
+    r.nama, r.posisi, r.tes, r.skor, r.benar, r.total, r.status, r.durasi, r.tanggal
+  ]);
+  const csv = [header, ...rows]
+    .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+    .join('\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `hasil_psikotes_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function hapusSemuaData() {
+  if (confirm('⚠️ Hapus SEMUA data hasil peserta? Tindakan ini tidak dapat dibatalkan.')) {
+    localStorage.removeItem('psikotes_forms');
+    renderAdmin();
+  }
+}
+
+/* =========================================================
+   KELUAR / KEMBALI
+========================================================= */
+function konfirmasiKeluar() {
+  if (confirm('Keluar dari tes? Jawaban Anda akan hilang.')) {
+    stopTimer();
+    state.hasilSementara = [];
+    state.jawaban = {};
+    kembaliKeBeranda();
+  }
+}
+
+function kembaliKeBeranda() {
+  stopTimer();
+  document.getElementById('inputNama').value = '';
+  document.getElementById('inputPosisi').value = '';
+  document.querySelectorAll('input[name="jenisTes"]').forEach(el => el.checked = false);
+  document.getElementById('pageForm').classList.remove('active');
+  showPage('pageForm');
+}
+
+/* =========================================================
+   KEYBOARD SHORTCUT (1-4 untuk pilih jawaban)
+========================================================= */
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('pageSoal').classList.contains('active')) return;
+  if (e.target.tagName === 'INPUT') return;
+  const n = parseInt(e.key);
+  if (n >= 1 && n <= 4) {
+    const radios = document.querySelectorAll('input[name="soal"]');
+    if (radios[n - 1]) {
+      radios[n - 1].checked = true;
+      radios[n - 1].dispatchEvent(new Event('change'));
+    }
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    soalBerikutnya();
+  }
+});
+
+/* =========================================================
+   ADMIN ACCESS — klik logo 3x atau shortcut Ctrl+Shift+A
+========================================================= */
+let clickCount = 0, clickTimer = null;
+document.querySelector('.form-header h1').addEventListener('click', () => {
+  if (!document.getElementById('pageForm').classList.contains('active')) return;
+  clickCount++;
+  clearTimeout(clickTimer);
+  clickTimer = setTimeout(() => clickCount = 0, 800);
+  if (clickCount >= 3) { clickCount = 0; bukaAdmin(); }
+});
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') {
+    e.preventDefault(); bukaAdmin();
+  }
+});
+</script>
+</body>
+</html>
