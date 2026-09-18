@@ -539,11 +539,11 @@
       <h1>Tes Psikotes Seleksi Kerja</h1>
       <div class="gold-line"></div>
       <p class="subtitle">
-        Selamat datang di tahap psikotes. Tes ini dirancang untuk mengukur kemampuan logika, verbal, numerik, dan ketelitian Anda. Jawablah dengan jujur dan teliti — tidak ada jawaban yang salah, hanya ketepatan waktu dan akurasi.
+        Selamat datang di tahap psikotes. Tes ini dirancang untuk mengukur kemampuan kognitif dan perilaku kerja dasar melalui beberapa kelompok soal seleksi kerja. Jawablah dengan jujur dan teliti — tidak ada jawaban yang salah, hanya ketepatan waktu dan akurasi.
       </p>
       <div class="form-meta">
-        <span>⏱ Durasi <strong>± 25 menit</strong></span>
-        <span>📝 <strong>45 pertanyaan</strong></span>
+        <span>⏱ Durasi <strong>± 30 menit</strong></span>
+        <span>📝 <strong>60 pertanyaan</strong></span>
         <span>📧 <strong>Email wajib aktif</strong></span>
       </div>
     </div>
@@ -567,18 +567,15 @@
     </div>
 
     <div class="card" id="cardTest">
-      <div class="card-title"><span class="badge-num">4</span>Pilih Jenis Tes <span class="req">*</span></div>
-      <div class="card-subtitle">Pilih "Paket Lengkap" untuk penilaian menyeluruh (direkomendasikan HRD)</div>
-      <div class="options">
-        <label class="opt"><input type="radio" name="jenisTes" value="semua" checked><span class="radio-circle"></span><span class="opt-label">🎯 <strong>Paket Lengkap</strong> — 4 jenis tes (Logika + Verbal + Numerik + Kraepelin)</span></label>
-        <label class="opt"><input type="radio" name="jenisTes" value="logika"><span class="radio-circle"></span><span class="opt-label">🔢 Tes Logika — Deret angka, pola &amp; penalaran</span></label>
-        <label class="opt"><input type="radio" name="jenisTes" value="verbal"><span class="radio-circle"></span><span class="opt-label">📝 Tes Verbal — Sinonim, antonim &amp; analogi</span></label>
-        <label class="opt"><input type="radio" name="jenisTes" value="numerik"><span class="radio-circle"></span><span class="opt-label">➗ Tes Numerik — Aritmatika &amp; soal cerita</span></label>
-        <label class="opt"><input type="radio" name="jenisTes" value="kraepelin"><span class="radio-circle"></span><span class="opt-label">⚡ Tes Kraepelin — Kecepatan &amp; ketelitian</span></label>
+      <div class="card-title"><span class="badge-num">4</span>Jenis Tes</div>
+      <div class="card-subtitle">Paket tes seleksi kerja untuk mengukur kemampuan kognitif dan perilaku kerja dasar.</div>
+      <div class="info-box" style="margin-bottom:0;">
+        🧠 <div><strong>Paket Psikotes Pegawai</strong><br>
+        Terdiri dari Tes Verbal, Tes Numerik, Tes Logika &amp; Penalaran, serta Tes Situasional &amp; Ketelitian. Semua peserta mengerjakan paket yang sama.</div>
       </div>
     </div>
 
-    <div class="actions" style="justify-content: flex-end;">
+    <div class="actions style="justify-content: flex-end;">
       <button class="btn" id="btnMulai" onclick="mulaiTes()">Mulai Tes →</button>
     </div>
   </div>
@@ -594,7 +591,7 @@
     </div>
 
     <div class="form-header">
-      <div class="header-badge" id="soalBadge">Bagian 1 dari 1</div>
+      <div class="header-badge" id="soalBadge">Bagian 1 dari 5</div>
       <h1 id="soalTitle">Tes</h1>
       <div class="gold-line"></div>
       <p class="subtitle" id="soalDesc">Jawab semua pertanyaan berikut.</p>
@@ -691,86 +688,99 @@
    SOAL PSIKOTES SELEKSI KERJA
 ========================================================= */
 const questions = {
-  logika: [
-    { q: "2, 4, 8, 16, ... ?", o: ["24", "32", "30", "28"], a: 1 },
-    { q: "1, 4, 9, 16, 25, ... ?", o: ["30", "36", "42", "49"], a: 1 },
-    { q: "3, 6, 12, 24, 48, ... ?", o: ["72", "84", "96", "108"], a: 2 },
-    { q: "1, 1, 2, 3, 5, 8, 13, ... ?", o: ["18", "20", "21", "24"], a: 2 },
-    { q: "100, 90, 81, 73, ... ?", o: ["64", "65", "66", "67"], a: 2 },
-    { q: "2, 6, 12, 20, 30, ... ?", o: ["40", "42", "44", "46"], a: 1 },
-    { q: "A, C, F, J, ... ?", o: ["M", "N", "O", "P"], a: 2 },
-    { q: "81, 27, 9, 3, ... ?", o: ["0", "1", "2", "3"], a: 1 },
-    { q: "5, 7, 11, 13, 17, ... ?", o: ["19", "21", "23", "25"], a: 0 },
-    { q: "4, 5, 7, 10, 14, ... ?", o: ["18", "19", "20", "21"], a: 1 },
-    { q: "Z, X, V, T, ... ?", o: ["R", "S", "Q", "P"], a: 0 },
-    { q: "1, 8, 27, 64, ... ?", o: ["100", "121", "125", "144"], a: 2 },
-    { q: "3, 9, 27, 81, ... ?", o: ["162", "216", "243", "324"], a: 2 },
-    { q: "Semua karyawan memakai seragam. Budi adalah karyawan. Maka...", o: ["Budi memakai seragam", "Budi tidak memakai seragam", "Budi kadang memakai seragam", "Tidak dapat disimpulkan"], a: 0 },
-    { q: "Jika hari ini hujan, maka jalan basah. Hari ini jalan tidak basah. Maka...", o: ["Hari ini hujan", "Hari ini tidak hujan", "Jalan tetap basah", "Tidak dapat disimpulkan"], a: 1 }
-  ],
   verbal: [
-    { q: "Sinonim dari 'PROFESIONAL' adalah...", o: ["Amatir", "Ahli", "Pemula", "Malas"], a: 1 },
-    { q: "Antonim dari 'EFISIEN' adalah...", o: ["Cepat", "Cermat", "Boros", "Tepat"], a: 2 },
-    { q: "Sinonim dari 'INISIATIF' adalah...", o: ["Prakarsa", "Perintah", "Larangan", "Kewajiban"], a: 0 },
-    { q: "Antonim dari 'OPTIMIS' adalah...", o: ["Yakin", "Pesimis", "Semangat", "Rajin"], a: 1 },
-    { q: "Sinonim dari 'INTEGRITAS' adalah...", o: ["Kejujuran", "Kekayaan", "Kepandaian", "Kekuatan"], a: 0 },
-    { q: "Antonim dari 'KOOPERATIF' adalah...", o: ["Ramah", "Membantu", "Individualis", "Sopan"], a: 2 },
-    { q: "Sinonim dari 'AMBISI' adalah...", o: ["Cita-cita", "Keraguan", "Ketakutan", "Kemalasan"], a: 0 },
-    { q: "Antonim dari 'DISIPLIN' adalah...", o: ["Taat", "Teratur", "Acuh tak acuh", "Patuh"], a: 2 },
-    { q: "Sinonim dari 'KOMUNIKATIF' adalah...", o: ["Pendiam", "Ramah bicara", "Pemalu", "Tertutup"], a: 1 },
-    { q: "Antonim dari 'TANGGUNG JAWAB' adalah...", o: ["Amanah", "Lalai", "Disiplin", "Peduli"], a: 1 },
-    { q: "Analogi: Guru : Sekolah = Dokter : ...", o: ["Obat", "Pasien", "Rumah sakit", "Perawat"], a: 2 },
-    { q: "Analogi: Karyawan : Gaji = Mahasiswa : ...", o: ["Dosen", "Buku", "Nilai", "Kampus"], a: 2 },
-    { q: "Analogi: Pena : Menulis = Pisau : ...", o: ["Tajam", "Memotong", "Besi", "Dapur"], a: 1 },
-    { q: "Analogi: Komputer : Keyboard = Mobil : ...", o: ["Bensin", "Roda", "Setir", "Mesin"], a: 2 },
-    { q: "Analogi: Karyawan : Perusahaan = Pemain : ...", o: ["Pelatih", "Klub", "Bola", "Stadion"], a: 1 }
+    { q: "Sinonim dari kata 'AKURAT' adalah...", o: ["Tepat", "Cepat", "Lambat", "Rumit"], a: 0 },
+    { q: "Antonim dari kata 'KONSISTEN' adalah...", o: ["Tetap", "Teratur", "Berubah-ubah", "Stabil"], a: 2 },
+    { q: "Sinonim dari kata 'INISIATIF' adalah...", o: ["Prakarsa", "Perintah", "Larangan", "Kewajiban"], a: 0 },
+    { q: "Antonim dari kata 'EFISIEN' adalah...", o: ["Hemat", "Boros", "Cepat", "Tepat"], a: 1 },
+    { q: "Sinonim dari kata 'INTEGRITAS' adalah...", o: ["Kejujuran", "Kekayaan", "Kepandaian", "Kekuatan"], a: 0 },
+    { q: "Antonim dari kata 'KOOPERATIF' adalah...", o: ["Membantu", "Ramah", "Individualistis", "Sopan"], a: 2 },
+    { q: "Sinonim dari kata 'RELEVAN' adalah...", o: ["Berkaitan", "Berlebihan", "Berbeda", "Berjarak"], a: 0 },
+    { q: "Antonim dari kata 'OBJEKTIF' adalah...", o: ["Netral", "Subjektif", "Rasional", "Terukur"], a: 1 },
+    { q: "Karyawan : Perusahaan = Siswa : ...", o: ["Buku", "Sekolah", "Guru", "Ujian"], a: 1 },
+    { q: "Dokter : Pasien = Guru : ...", o: ["Kelas", "Buku", "Murid", "Sekolah"], a: 2 },
+    { q: "Pena : Menulis = Kamera : ...", o: ["Melihat", "Memotret", "Mencetak", "Menggambar"], a: 1 },
+    { q: "Arti paling tepat dari 'prioritas' adalah...", o: ["Hal yang ditunda", "Hal yang didahulukan", "Hal yang dihindari", "Hal yang diabaikan"], a: 1 },
+    { q: "Kata yang paling berbeda adalah...", o: ["Meja", "Kursi", "Lemari", "Pensil"], a: 3 },
+    { q: "Jika semua supervisor adalah karyawan dan sebagian karyawan bekerja shift malam, maka...", o: ["Semua supervisor pasti shift malam", "Tidak ada supervisor shift malam", "Supervisor termasuk kelompok karyawan", "Semua karyawan adalah supervisor"], a: 2 },
+    { q: "Kalimat yang paling efektif adalah...", o: ["Saya akan segera menyelesaikan tugas tersebut.", "Tugas tersebut akan saya segera selesaikan dengan segera.", "Saya segera akan menyelesaikan tugas itu nanti.", "Adapun saya akan segera untuk menyelesaikan tugas tersebut."], a: 0 }
   ],
   numerik: [
-    { q: "Jika 5 pekerja menyelesaikan proyek dalam 12 hari, berapa hari jika 10 pekerja?", o: ["4 hari", "5 hari", "6 hari", "8 hari"], a: 2 },
-    { q: "Sebuah barang dijual Rp 120.000 dengan diskon 25%. Harga setelah diskon?", o: ["Rp 80.000", "Rp 85.000", "Rp 90.000", "Rp 95.000"], a: 2 },
-    { q: "Harga naik dari Rp 50.000 ke Rp 60.000. Berapa % kenaikannya?", o: ["10%", "15%", "20%", "25%"], a: 2 },
-    { q: "Gaji Rp 4.500.000 dipotong pajak 5%. Gaji bersihnya?", o: ["Rp 4.200.000", "Rp 4.250.000", "Rp 4.275.000", "Rp 4.300.000"], a: 2 },
-    { q: "Sebuah mobil menempuh 240 km dalam 3 jam. Kecepatan rata-ratanya?", o: ["60 km/jam", "70 km/jam", "80 km/jam", "90 km/jam"], a: 2 },
-    { q: "Jika 3x + 6 = 21, berapa nilai x?", o: ["3", "4", "5", "6"], a: 2 },
-    { q: "Berapa 15% dari 480?", o: ["62", "68", "72", "78"], a: 2 },
-    { q: "Rata-rata dari 8, 12, 16, 20 adalah...", o: ["12", "13", "14", "15"], a: 2 },
-    { q: "Tabungan Rp 2.000.000 dengan bunga 6%/tahun. Berapa bunga per bulan?", o: ["Rp 8.000", "Rp 9.000", "Rp 10.000", "Rp 12.000"], a: 2 },
-    { q: "Sebuah pekerjaan selesai 4 jam oleh A, 6 jam oleh B. Jika kerja bersama, berapa jam?", o: ["2 jam", "2,4 jam", "3 jam", "3,6 jam"], a: 1 },
-    { q: "Harga awal Rp 200.000, diskon 30% + diskon tambahan 10%. Harga akhir?", o: ["Rp 120.000", "Rp 126.000", "Rp 130.000", "Rp 140.000"], a: 1 },
-    { q: "Perbandingan uang A : B = 3 : 5. Jika uang B Rp 250.000, uang A?", o: ["Rp 100.000", "Rp 125.000", "Rp 150.000", "Rp 175.000"], a: 2 },
-    { q: "Sebuah toko menjual 45 item/hari. Berapa item terjual dalam 30 hari?", o: ["1.250", "1.300", "1.350", "1.400"], a: 2 },
-    { q: "Jika ⅔ dari suatu angka adalah 48, angka tersebut adalah...", o: ["64", "68", "72", "76"], a: 2 },
-    { q: "Karyawan A dapat mengetik 60 kata/menit. Berapa kata dalam 1,5 jam?", o: ["5.200", "5.400", "5.600", "5.800"], a: 1 }
+    { q: "Jika 5 pekerja menyelesaikan pekerjaan dalam 12 hari, dengan produktivitas sama, 10 pekerja memerlukan...", o: ["4 hari", "5 hari", "6 hari", "8 hari"], a: 2 },
+    { q: "Harga barang Rp120.000 mendapat diskon 25%. Harga akhirnya adalah...", o: ["Rp80.000", "Rp85.000", "Rp90.000", "Rp95.000"], a: 2 },
+    { q: "Harga naik dari Rp50.000 menjadi Rp60.000. Persentase kenaikannya...", o: ["10%", "15%", "20%", "25%"], a: 2 },
+    { q: "Gaji Rp4.500.000 dipotong 5%. Gaji setelah potongan adalah...", o: ["Rp4.200.000", "Rp4.250.000", "Rp4.275.000", "Rp4.300.000"], a: 2 },
+    { q: "Sebuah kendaraan menempuh 240 km dalam 3 jam. Kecepatan rata-ratanya...", o: ["60 km/jam", "70 km/jam", "80 km/jam", "90 km/jam"], a: 2 },
+    { q: "Jika 3x + 6 = 21, nilai x adalah...", o: ["3", "4", "5", "6"], a: 2 },
+    { q: "15% dari 480 adalah...", o: ["62", "68", "72", "78"], a: 2 },
+    { q: "Rata-rata dari 8, 12, 16, dan 20 adalah...", o: ["12", "13", "14", "15"], a: 2 },
+    { q: "Perbandingan A : B = 3 : 5. Jika B = Rp250.000, maka A =...", o: ["Rp100.000", "Rp125.000", "Rp150.000", "Rp175.000"], a: 2 },
+    { q: "Sebuah toko menjual 45 unit per hari. Dalam 30 hari terjual...", o: ["1.250", "1.300", "1.350", "1.400"], a: 2 },
+    { q: "Jika 2/3 dari suatu angka adalah 48, angka tersebut adalah...", o: ["64", "68", "72", "76"], a: 2 },
+    { q: "60 kata per menit selama 1,5 jam menghasilkan...", o: ["4.800 kata", "5.400 kata", "5.600 kata", "6.000 kata"], a: 1 },
+    { q: "Modal Rp200.000 mendapat keuntungan 15%. Harga jualnya...", o: ["Rp215.000", "Rp225.000", "Rp230.000", "Rp235.000"], a: 2 },
+    { q: "Satu tim menghasilkan 240 unit dalam 8 jam. Rata-rata produksi per jam...", o: ["20", "25", "30", "35"], a: 2 },
+    { q: "Jika 4 barang berharga Rp72.000, maka harga 7 barang dengan harga satuan sama adalah...", o: ["Rp108.000", "Rp126.000", "Rp144.000", "Rp154.000"], a: 1 }
   ],
-  kraepelin: [
-    { q: "7 + 5 = ?", o: ["11", "12", "13", "14"], a: 1 },
-    { q: "8 + 6 = ?", o: ["13", "14", "15", "16"], a: 1 },
-    { q: "9 + 4 = ?", o: ["12", "13", "14", "15"], a: 1 },
-    { q: "6 + 7 = ?", o: ["12", "13", "14", "15"], a: 1 },
-    { q: "5 + 8 = ?", o: ["12", "13", "14", "15"], a: 1 },
-    { q: "9 + 9 = ?", o: ["17", "18", "19", "20"], a: 1 },
-    { q: "7 + 7 = ?", o: ["13", "14", "15", "16"], a: 1 },
-    { q: "8 + 9 = ?", o: ["16", "17", "18", "19"], a: 1 },
-    { q: "6 + 8 = ?", o: ["13", "14", "15", "16"], a: 1 },
-    { q: "4 + 9 = ?", o: ["12", "13", "14", "15"], a: 1 },
-    { q: "5 + 5 = ?", o: ["9", "10", "11", "12"], a: 1 },
-    { q: "3 + 8 = ?", o: ["10", "11", "12", "13"], a: 1 },
-    { q: "7 + 9 = ?", o: ["15", "16", "17", "18"], a: 1 },
-    { q: "6 + 6 = ?", o: ["11", "12", "13", "14"], a: 1 },
-    { q: "8 + 7 = ?", o: ["14", "15", "16", "17"], a: 1 },
-    { q: "9 + 3 = ?", o: ["11", "12", "13", "14"], a: 1 },
-    { q: "4 + 7 = ?", o: ["10", "11", "12", "13"], a: 1 },
-    { q: "8 + 8 = ?", o: ["15", "16", "17", "18"], a: 1 },
-    { q: "5 + 9 = ?", o: ["13", "14", "15", "16"], a: 1 },
-    { q: "6 + 9 = ?", o: ["14", "15", "16", "17"], a: 1 }
+  logika: [
+    { q: "2, 4, 8, 16, ... ?", o: ["24", "32", "30", "36"], a: 1 },
+    { q: "3, 6, 12, 24, 48, ... ?", o: ["72", "84", "96", "108"], a: 2 },
+    { q: "1, 4, 9, 16, 25, ... ?", o: ["30", "36", "42", "49"], a: 1 },
+    { q: "2, 6, 12, 20, 30, ... ?", o: ["40", "42", "44", "46"], a: 1 },
+    { q: "81, 27, 9, 3, ... ?", o: ["0", "1", "2", "4"], a: 1 },
+    { q: "5, 8, 11, 14, 17, ... ?", o: ["19", "20", "21", "22"], a: 2 },
+    { q: "100, 90, 81, 73, ... ?", o: ["64", "65", "66", "67"], a: 2 },
+    { q: "A, C, F, J, ... ?", o: ["M", "N", "O", "P"], a: 2 },
+    { q: "Z, X, V, T, ... ?", o: ["R", "S", "Q", "P"], a: 0 },
+    { q: "1, 8, 27, 64, ... ?", o: ["100", "121", "125", "144"], a: 2 },
+    { q: "Jika semua A adalah B, dan semua B adalah C, maka...", o: ["Semua C adalah A", "Sebagian A bukan C", "Semua A adalah C", "Tidak ada A yang C"], a: 2 },
+    { q: "Jika hari ini hujan maka jalan basah. Jalan tidak basah. Kesimpulan logisnya...", o: ["Hari ini pasti hujan", "Hari ini tidak hujan", "Jalan akan tetap basah", "Tidak ada hubungan"], a: 1 },
+    { q: "Andi lebih tinggi dari Budi. Budi lebih tinggi dari Citra. Siapa paling pendek?", o: ["Andi", "Budi", "Citra", "Tidak dapat ditentukan"], a: 2 },
+    { q: "Semua staf wajib hadir pukul 08.00. Rina adalah staf. Maka...", o: ["Rina boleh datang 09.00", "Rina wajib hadir pukul 08.00", "Rina tidak perlu hadir", "Tidak dapat disimpulkan"], a: 1 },
+    { q: "Jika 1=3, 2=6, 3=9, maka 7=...", o: ["18", "21", "24", "27"], a: 1 }
+  ],
+  situasional: [
+    { q: "Anda menerima tugas baru dengan tenggat hari ini, sementara tugas lama belum selesai. Apa yang paling tepat?", o: ["Meninggalkan tugas lama tanpa kabar", "Menentukan prioritas dan mengomunikasikan kondisi kepada atasan", "Menunggu sampai ada yang mengingatkan", "Mengerjakan secara acak"], a: 1 },
+    { q: "Anda menemukan kesalahan pada laporan yang sudah hampir dikirim. Apa tindakan pertama?", o: ["Mengabaikannya", "Menghapus laporan", "Memeriksa kesalahan lalu memperbaiki atau melaporkannya", "Menyalahkan rekan kerja"], a: 2 },
+    { q: "Rekan kerja meminta Anda mengubah data agar hasil terlihat lebih baik. Anda sebaiknya...", o: ["Mengikuti permintaan", "Mengubah sedikit saja", "Menolak dan menjaga data tetap sesuai fakta", "Meminta imbalan"], a: 2 },
+    { q: "Anda tidak memahami instruksi pekerjaan. Tindakan yang paling tepat adalah...", o: ["Menebak tanpa bertanya", "Meminta klarifikasi agar pekerjaan sesuai tujuan", "Menunda tanpa batas", "Menyuruh rekan mengerjakan"], a: 1 },
+    { q: "Pelanggan menyampaikan keluhan dengan nada tinggi. Anda sebaiknya...", o: ["Membalas dengan nada tinggi", "Mendengarkan, tetap tenang, dan mencari solusi sesuai prosedur", "Langsung mengakhiri pembicaraan", "Menyalahkan pelanggan"], a: 1 },
+    { q: "Anda melihat prosedur keselamatan kerja tidak dijalankan. Apa yang paling tepat?", o: ["Membiarkannya", "Mengikuti saja agar cepat", "Mengingatkan dan melaporkan sesuai prosedur", "Merekam lalu menyebarkannya"], a: 2 },
+    { q: "Atasan memberi kritik terhadap pekerjaan Anda. Respons yang paling konstruktif adalah...", o: ["Menolak semua kritik", "Menerima masukan dan memperbaiki bagian yang relevan", "Menyalahkan kondisi", "Tidak mengerjakan lagi"], a: 1 },
+    { q: "Anda selesai lebih cepat sementara rekan satu tim masih kesulitan. Anda sebaiknya...", o: ["Pulang tanpa memberi tahu", "Membantu jika memungkinkan tanpa mengabaikan tanggung jawab sendiri", "Mengambil alih semua pekerjaannya", "Membiarkannya agar terlihat lebih unggul"], a: 1 },
+    { q: "Anda menemukan dokumen perusahaan yang bersifat rahasia. Apa yang sebaiknya dilakukan?", o: ["Mengirim ke teman", "Menyimpan salinan pribadi", "Menjaga kerahasiaan dan menyerahkannya melalui prosedur yang berlaku", "Mengunggah ke media sosial"], a: 2 },
+    { q: "Dua pekerjaan sama-sama penting. Cara paling tepat menentukan prioritas adalah...", o: ["Memilih yang paling mudah", "Memilih berdasarkan urgensi, dampak, dan tenggat waktu", "Memilih secara acak", "Menunggu sampai salah satunya terlambat"], a: 1 },
+    { q: "Anda terlambat karena kendala yang tidak terduga. Tindakan profesional adalah...", o: ["Tidak memberi kabar", "Memberi informasi secepatnya dan mengikuti prosedur perusahaan", "Berbohong tentang penyebabnya", "Menyalahkan rekan kerja"], a: 1 },
+    { q: "Rekan kerja berbeda pendapat dengan Anda dalam rapat. Anda sebaiknya...", o: ["Memotong pembicaraannya", "Mendengarkan alasan dan membahas berdasarkan data atau tujuan kerja", "Menghindari semua diskusi", "Memaksakan pendapat"], a: 1 },
+    { q: "Anda melakukan kesalahan yang berdampak pada pekerjaan tim. Apa yang paling tepat?", o: ["Menyembunyikannya", "Mengakui, segera memperbaiki, dan mencegah pengulangan", "Menyalahkan sistem", "Menunggu orang lain menemukan"], a: 1 },
+    { q: "Anda mendapat pekerjaan rutin yang berulang. Sikap yang paling tepat adalah...", o: ["Mengerjakan asal selesai", "Tetap mengikuti standar dan menjaga ketelitian", "Sering menunda", "Mengubah prosedur sendiri"], a: 1 },
+    { q: "Anda diminta melakukan sesuatu yang bertentangan dengan aturan perusahaan. Anda sebaiknya...", o: ["Tetap melakukannya", "Meminta klarifikasi dan mengikuti prosedur atau jalur eskalasi yang berlaku", "Menghapus bukti", "Meminta rekan ikut bertanggung jawab"], a: 1 }
+  ],
+  ketelitian: [
+    { q: "Manakah pasangan yang SAMA persis?", o: ["AB-2719 / AB-2179", "KX-4086 / KX-4086", "TR-5912 / TR-5192", "MN-7834 / MN-7384"], a: 1 },
+    { q: "Manakah kode yang berbeda?", o: ["Q7L-428", "Q7L-428", "Q7L-482", "Q7L-428"], a: 2 },
+    { q: "Pilih urutan yang identik: 582741", o: ["582714", "582741", "587241", "582471"], a: 1 },
+    { q: "Manakah pasangan yang SAMA persis?", o: ["PT-06A91 / PT-06A19", "PT-08B72 / PT-08B72", "PT-09C38 / PT-09C83", "PT-10D44 / PT-10D14"], a: 1 },
+    { q: "Kode acuan: 4H7-K29. Mana yang sama?", o: ["4H7-K92", "4H7-K29", "4H7-29K", "4H7-K28"], a: 1 },
+    { q: "Manakah angka yang berbeda dari tiga lainnya?", o: ["731604", "731604", "731640", "731604"], a: 2 },
+    { q: "Kode acuan: RX-315-QL. Mana yang sama?", o: ["RX-315-QL", "RX-351-QL", "RX-315-LQ", "RX-315-QI"], a: 0 },
+    { q: "Manakah pasangan yang SAMA persis?", o: ["INV-24018 / INV-24081", "INV-24027 / INV-24027", "INV-24035 / INV-24305", "INV-24044 / INV-24014"], a: 1 },
+    { q: "Urutan yang identik dengan 906-417-25 adalah...", o: ["906-471-25", "906-417-25", "960-417-25", "906-417-52"], a: 1 },
+    { q: "Manakah kode yang berbeda?", o: ["LK9-5521", "LK9-5521", "LK9-5251", "LK9-5521"], a: 2 },
+    { q: "Kode acuan: 73B-16X. Mana yang sama?", o: ["73B-16X", "73B-61X", "73B-16K", "37B-16X"], a: 0 },
+    { q: "Manakah pasangan yang SAMA persis?", o: ["DOC-7812 / DOC-7182", "DOC-7821 / DOC-7821", "DOC-7834 / DOC-7384", "DOC-7845 / DOC-7458"], a: 1 },
+    { q: "Angka yang identik dengan 418925 adalah...", o: ["418952", "418925", "481925", "418295"], a: 1 },
+    { q: "Kode acuan: M4-P72-Z. Mana yang sama?", o: ["M4-P27-Z", "M4-P72-Z", "M4-72P-Z", "M4-P72-2"], a: 1 },
+    { q: "Manakah pasangan yang SAMA persis?", o: ["SO-31-847 / SO-31-874", "SO-32-915 / SO-32-915", "SO-33-621 / SO-33-261", "SO-34-708 / SO-34-780"], a: 1 }
   ]
 };
 
 const testInfo = {
-  logika:    { nama: "Tes Logika",    icon: "🔢", desc: "Deret angka, pola & penalaran logis", threshold: 70 },
-  verbal:    { nama: "Tes Verbal",    icon: "📝", desc: "Sinonim, antonim & analogi kata",     threshold: 70 },
-  numerik:   { nama: "Tes Numerik",   icon: "➗", desc: "Aritmatika & soal cerita kerja",      threshold: 70 },
-  kraepelin: { nama: "Tes Kraepelin", icon: "⚡", desc: "Kecepatan & ketelitian berhitung",    threshold: 60 }
+  verbal:       { nama: "Tes Verbal", icon: "📝", desc: "Kemampuan memahami bahasa, hubungan kata, dan komunikasi kerja", threshold: 70 },
+  numerik:      { nama: "Tes Numerik", icon: "➗", desc: "Kemampuan berhitung dan menyelesaikan masalah kuantitatif", threshold: 70 },
+  logika:       { nama: "Tes Logika & Penalaran", icon: "🧠", desc: "Penalaran induktif, deduktif, pola, dan hubungan logis", threshold: 70 },
+  situasional:  { nama: "Tes Situasional", icon: "💼", desc: "Penilaian respons terhadap situasi kerja", threshold: 70 },
+  ketelitian:   { nama: "Tes Ketelitian", icon: "🔎", desc: "Kemampuan memperhatikan detail dan membedakan informasi", threshold: 70 }
 };
 
 let state = {
@@ -833,7 +843,6 @@ async function mulaiTes() {
   if (!nama) { document.getElementById('cardNama').classList.add('error'); valid = false; }
   if (!email || !validasiEmail(email)) { document.getElementById('cardEmail').classList.add('error'); valid = false; }
   if (!posisi) { document.getElementById('cardPosisi').classList.add('error'); valid = false; }
-  if (!jenisEl) { document.getElementById('cardTest').classList.add('error'); valid = false; }
 
   if (!valid) {
     if (!email || !validasiEmail(email)) alert('⚠️ Email tidak valid. Periksa kembali format email Anda.');
@@ -863,8 +872,7 @@ async function mulaiTes() {
   state.nama = nama;
   state.email = email;
   state.posisi = posisi;
-  state.jenis = jenisEl.value;
-  state.urutanTes = jenisEl.value === 'semua' ? ['logika', 'verbal', 'numerik', 'kraepelin'] : [jenisEl.value];
+  state.urutanTes = ['verbal', 'numerik', 'logika', 'situasional', 'ketelitian'];
   state.indexTes = 0;
   state.jawaban = {};
   state.hasilSementara = [];
@@ -1114,7 +1122,6 @@ function kembaliKeBeranda() {
   document.getElementById('inputNama').value = '';
   document.getElementById('inputEmail').value = '';
   document.getElementById('inputPosisi').value = '';
-  document.querySelectorAll('input[name="jenisTes"]').forEach(el => el.checked = false);
   document.getElementById('pageForm').classList.remove('active');
   showPage('pageForm');
 }
